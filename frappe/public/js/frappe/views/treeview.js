@@ -281,6 +281,14 @@ frappe.views.TreeView = Class.extend({
 			}
 		})
 	},
+	print_tree: function() {
+		if(!frappe.model.can_print(this.doctype)) {
+			frappe.msgprint(__("You are not allowed to print this report"));
+			return false;
+		}
+		console.log(this.doctype)
+		frappe.render_tree({title:this.doctype, tree: this.make_tree()});
+	},
 	set_primary_action: function(){
 		var me = this;
 		if (!this.opts.disable_add_node && this.can_create) {
@@ -297,6 +305,12 @@ frappe.views.TreeView = Class.extend({
 				label: __('View List'),
 				action: function() {
 					frappe.set_route('List', me.doctype);
+				}
+			},
+			{
+				label: __('Print'),
+				action: function() {
+					me.print_tree()
 				}
 			},
 			{

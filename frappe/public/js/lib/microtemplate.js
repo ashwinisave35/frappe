@@ -85,6 +85,7 @@ frappe.render_template = function(name, data) {
 	return frappe.render(template, data, name);
 }
 frappe.render_grid = function(opts) {
+	console.log(opts)
 	// build context
 	if(opts.grid) {
 		opts.columns = opts.grid.getColumns();
@@ -113,6 +114,22 @@ frappe.render_grid = function(opts) {
 	opts.base_url = frappe.urllib.get_base_url();
 	opts.print_css = frappe.boot.print_css;
 	var html = frappe.render_template("print_template", opts);
+
+	var w = window.open();
+
+	if(!w) {
+		frappe.msgprint(__("Please enable pop-ups in your browser"))
+	}
+
+	w.document.write(html);
+	w.document.close();
+},
+frappe.render_tree = function(opts) {
+	console.log(opts);
+	console.log(opts.title);
+	opts.base_url = frappe.urllib.get_base_url();
+	opts.print_css = frappe.boot.print_css;
+	var html = "<html><head><title>"+ opts.title +"</title></head><body><h2>This is report</h2></body</html>"
 
 	var w = window.open();
 
